@@ -8,7 +8,7 @@ int a = 1000;
 void setup()
 {
   pinMode(LED_pin, OUTPUT);
-  pinMode(Interrupt_pin, INPUT_PULLUP);
+  pinMode(Interrupt_pin, INPUT);
     attachInterrupt(digitalPinToInterrupt(Interrupt_pin), blink, RISING);
 }
 
