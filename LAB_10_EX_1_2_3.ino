@@ -5,8 +5,8 @@ int interruptChannelAPin = 2;
 int interruptChannelBPin = 3;
 bool A_read;
 bool B_read;
-volatile int encoderAcount = 0;
-volatile int encoderBcount = 0;
+volatile int encodercount = 0;
+//volatile int encoderBcount = 0;
 
 int count = 0;
 int direction;
@@ -26,40 +26,39 @@ void setup()
                   ChannelB_callback,RISING);
   Serial.begin(9600);
 }
-void moveForward()
+void moveForward(int a)
 {
   digitalWrite(MOTOR_D1_PIN,HIGH);
   digitalWrite(MOTOR_D2_PIN,LOW);
-  analogWrite(MOTOR_PWM_PIN,20);
+  analogWrite(MOTOR_PWM_PIN,a);
   direction =1;
 }
-void moveBackward()
+void moveBackward(int a)
 {
   digitalWrite(MOTOR_D1_PIN,LOW);
   digitalWrite(MOTOR_D2_PIN,HIGH);
-  analogWrite(MOTOR_PWM_PIN,20);
+  analogWrite(MOTOR_PWM_PIN,a);
   direction =0;
 }
 void loop()
 {
-   moveBackward();
-   //moveForward();
+   //moveBackward(255);
+   moveForward(255);
    Serial.print("Direction : ");
    Serial.print(direction);
    Serial.print(" Position : ");
-   Serial.println(encoderBcount); //Backward
-   //Serial.println(encoderAcount); //Forward
+   Serial.println(encodercount);
    delay(500);
 }
 void ChannelA_callback()
 {
-  bool A2_read = digitalRead(interruptChannelAPin);
+  bool A2_read = digitalRead(interruptChannelBPin);
   if((A_read==0)&&(A2_read==1))
-   encoderAcount++;
+   encodercount--;
 }
 void ChannelB_callback()
 {
-  bool B2_read = digitalRead(interruptChannelBPin);
+  bool B2_read = digitalRead(interruptChannelAPin);
   if((B_read==0)&&(B2_read==1))
-  encoderBcount--;
+  encodercount++;
 }
